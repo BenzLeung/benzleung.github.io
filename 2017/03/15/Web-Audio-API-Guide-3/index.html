@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="（续上节：Web Audio API 小教程(2): 入门篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 AudioNode 回顾概念">
+<meta name="keywords" content="Web Audio API,Javascript,Web Audio API 小教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web Audio API 小教程(3): 初级使用篇">
+<meta property="og:url" content="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-3/index.html">
+<meta property="og:site_name" content="Benz Leung">
+<meta property="og:description" content="（续上节：Web Audio API 小教程(2): 入门篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 AudioNode 回顾概念">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/2/1.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/2/2.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/2/audioparam-automation1.png">
+<meta property="og:updated_time" content="2018-06-19T08:40:04.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web Audio API 小教程(3): 初级使用篇">
+<meta name="twitter:description" content="（续上节：Web Audio API 小教程(2): 入门篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 AudioNode 回顾概念">
+<meta name="twitter:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/2/1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-3/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Web Audio API 小教程(3): 初级使用篇 | Benz Leung</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?08e7568514d4ec603eb05778e56aef48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Benz Leung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/BenzLeung" class="github-corner" target="_blank" title="My GitHub" aria-label="My GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Benz Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Benz Leung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web Audio API 小教程(3): 初级使用篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-15 20:25:40" itemprop="dateCreated datePublished" datetime="2017-03-15T20:25:40+08:00">2017-03-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-06-19 16:40:04" itemprop="dateModified" datetime="2018-06-19T16:40:04+08:00">2018-06-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/15/Web-Audio-API-Guide-3/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2017/03/15/Web-Audio-API-Guide-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>（续上节：<a href="/2017/03/15/Web-Audio-API-Guide-Getting-Started/">Web Audio API 小教程(2): 入门篇</a>）</p>
+<ul>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Preface/">(0): 序言与目录</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-What-can-it-do/">(1): 它能做什么？</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Getting-Started/">(2): 入门篇</a></li>
+<li><strong>(3): 初级使用篇</strong></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-About-Sound/">(4): 一些声音常识</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Advanced-User/">(5): 进阶篇</a></li>
+</ul>
+<p><a href="https://benzleung.gitbooks.io/web-audio-api-mini-guide/" target="_blank" rel="noopener">【Gitbook 版本】</a></p>
+<h2 id="AudioNode-回顾"><a href="#AudioNode-回顾" class="headerlink" title="AudioNode 回顾"></a>AudioNode 回顾</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><a id="more"></a>
+<ul>
+<li><code>AudioNode</code> 是一种用于生成或处理音频数据的类。</li>
+<li><code>AudioNode</code> 是一个基础类，它有很多子类。</li>
+<li>它的子类们，分别有不同的处理音频的功能<ul>
+<li>例如均衡器、音量增益、滤波器……</li>
+</ul>
+</li>
+</ul>
+<h3 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h3><p>作为【声音源头】的 AudioNode。</p>
+<ul>
+<li>用于存储波形数据，或者凭空生成波形数据。</li>
+<li>音源没有输入，只有输出。</li>
+<li>例： <code>SourceNode</code> ，用于存储波形数据并直接原样输出。</li>
+</ul>
+<p>作为【过滤器】的 AudioNode。</p>
+<ul>
+<li>用于过滤所输入的波形，并输出过滤后的结果。</li>
+<li>过滤器至少接受1个输入，有1个输出。</li>
+<li>有些过滤器可接受多个输入。</li>
+<li>例：<code>GainNode</code>，用于调整音量。</li>
+</ul>
+<p>作为【终点】的 <code>destination</code>。</p>
+<ul>
+<li>这是Node的终点。</li>
+<li>可接受多个输入（但不建议），无须输出。</li>
+<li>输入到这里的声音将被用户听到。</li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>使用 <code>.connect</code> 方法把各种Node连接起来，起点是 <code>SourceNode</code>，终点是 <code>destination</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.connect(node1);</span><br><span class="line">node1.connect(node2);</span><br><span class="line">node2.connect(node3);</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">nodeN.connect(ctx.destination);</span><br></pre></td></tr></table></figure>
+<p>使用 context 创建 AudioNode 对象，而不是 new 一个。</p>
+<p>例如使用 <code>context.createBufferSource();</code> 而不是 new SourceNode();</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sourceNode = ctx.createBufferSource();</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="常用的-Node-详解"><a href="#常用的-Node-详解" class="headerlink" title="常用的 Node 详解"></a>常用的 Node 详解</h2><p>下面会详解3个最常用的 Node。</p>
+<h3 id="SourceNode"><a href="#SourceNode" class="headerlink" title="SourceNode"></a>SourceNode</h3><p>这是最常用的 Node ，用于存储波形数据。</p>
+<p>创建方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sourceNode = ctx.createBufferSource();</span><br></pre></td></tr></table></figure>
+<p>提供数据：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.buffer = buffer;</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">playBuffer</span>(<span class="params">buffer</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> sourceNode = ctx.createBufferSource();</span><br><span class="line">  sourceNode.buffer = buffer;</span><br><span class="line">  sourceNode.connect(ctx.destination);</span><br><span class="line">  sourceNode.start(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="SourceNode-start-开始播放"><a href="#SourceNode-start-开始播放" class="headerlink" title="SourceNode.start() 开始播放"></a>SourceNode.start() 开始播放</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start(when, offset, duration)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>when</code>: 何时开始播放（秒）（参数可省掉）</li>
+<li><code>offset</code>: 音频的何处开始播放（秒）（参数可省掉）</li>
+<li><code>duration</code>: 播放多长时间（参数可省掉）</li>
+<li>返回值：无</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.start(ctx.currentTime + <span class="number">5</span>, <span class="number">1.5</span>, <span class="number">3.0</span>);</span><br></pre></td></tr></table></figure>
+<p>上述语句表示：5秒后开始播放（当前时间+5），从音频1.5秒开始，播放到4.5秒处停止（持续3.0秒）。</p>
+<p>若 <code>when</code> 参数的值小于等于 <code>ctx.currentTime</code> ，则默认立即开始播放。下面 <code>stop()</code> 也一样。</p>
+<h4 id="SourceNode-stop-结束"><a href="#SourceNode-stop-结束" class="headerlink" title="SourceNode.stop() 结束"></a>SourceNode.stop() 结束</h4><pre><code>stop(when)
+</code></pre><ul>
+<li><code>when</code>: 何时结束（秒）（参数可省掉）</li>
+<li>返回值：无</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.stop(ctx.currentTime + <span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+<p>上述语句表示：5秒后结束（当前时间+5），然后<strong>整个 SourceNode 就作废了</strong>（上一节讲过），要播放就需要重新创建对象。</p>
+<h4 id="SourceNode-loop-loopStart-loopEnd-循环播放设定"><a href="#SourceNode-loop-loopStart-loopEnd-循环播放设定" class="headerlink" title="SourceNode.loop / loopStart / loopEnd 循环播放设定"></a>SourceNode.loop / loopStart / loopEnd 循环播放设定</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loop = [boolean]</span><br><span class="line">loopStart = [number]</span><br><span class="line">loopEnd = [number]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>loop</code>: 是否循环播放</li>
+<li><code>loopStart</code>: 循环开始点</li>
+<li><code>loopEnd</code>: 循环结束点</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.loop = <span class="literal">true</span>;</span><br><span class="line">sourceNode.loopStart = <span class="number">2.2</span>;</span><br><span class="line">sourceNode.loopEnd = <span class="number">6.0</span>;</span><br></pre></td></tr></table></figure>
+<p>上述语句表示：2.2秒-6.0秒是循环节，播放到6.0秒处立即返回2.2秒继续播放。</p>
+<p>可以指定循环节位置，是 SourceNode 比 HTML-5 的 <code>&lt;audio&gt;</code> 更强大的地方之一。所以，在游戏开发中，即使背景音乐也应该用 Web Audio API 而不用 <code>&lt;audio&gt;</code>。</p>
+<h4 id="SourceNode-onended-播放完毕事件"><a href="#SourceNode-onended-播放完毕事件" class="headerlink" title="SourceNode.onended 播放完毕事件"></a>SourceNode.onended 播放完毕事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onended = [function]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>onended</code>: 播放完毕后触发的事件</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sourceNode.onended = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert(<span class="string">'播放完毕！'</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="GainNode-音量调节器"><a href="#GainNode-音量调节器" class="headerlink" title="GainNode 音量调节器"></a>GainNode 音量调节器</h3><ul>
+<li>用于调节音量</li>
+<li>创建方法： <code>ctx.createGain()</code></li>
+<li>调音量： <code>gainNode.gain.value = 0.5</code>（取值范围 0.0-1.0）</li>
+</ul>
+<p>例：（把上文以及上一节的 playBuffer() 加上音量功能）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">playBuffer</span>(<span class="params">buffer, volume</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> sourceNode = ctx.createBufferSource();</span><br><span class="line">  sourceNode.buffer = buffer;</span><br><span class="line">  <span class="keyword">var</span> gainNode = ctx.createGain();</span><br><span class="line">  gainNode.gain.value = volume;</span><br><span class="line">  sourceNode.connect(gainNode);</span><br><span class="line">  gainNode.connect(ctx.destination);</span><br><span class="line">  sourceNode.start(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码，Node 连接成 <code>sourceNode</code> -&gt; <code>gainNode</code> -&gt; <code>destination</code>。然后，可以随时通过修改 <code>gainNode.gain.value</code> 的值，来调节音量。</p>
+<h4 id="GainNode-gain"><a href="#GainNode-gain" class="headerlink" title="GainNode.gain"></a>GainNode.gain</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gain = [AudioParam]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>gainNode.gain.value</code> 调音量。</li>
+<li><code>gain</code> 是一个 <code>AudioParam</code> 对象，<code>gain.value</code> 才是音量的具体值（0.0-1.0）。</li>
+<li><strong>AudioParam</strong> 是个 Audio API 特有的对象（下文分解↓↓）</li>
+</ul>
+<h3 id="AudioParam"><a href="#AudioParam" class="headerlink" title="AudioParam"></a>AudioParam</h3><p><strong>AudioParam</strong> 不是 Node，而是一个很有用的类。</p>
+<p>某些 Node 的<strong>数值型参数</strong>可采用 AudioParam 记录数值。</p>
+<p>AudioParam 不仅可以直接给 <code>value</code> 一个固定值，而且能让数值产生<strong>渐变</strong>效果，例如让音量从高慢慢变低，产生淡出效果。</p>
+<h4 id="AudioParam-value"><a href="#AudioParam-value" class="headerlink" title="AudioParam.value"></a>AudioParam.value</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value = [number]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>直接改数值。</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gainNode.gain.value = <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="AudioParam-setValueAtTime"><a href="#AudioParam-setValueAtTime" class="headerlink" title="AudioParam.setValueAtTime()"></a>AudioParam.setValueAtTime()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setValueAtTime(value, startTime)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在指定时间把数值改成指定值。</li>
+<li>value: 指定值。</li>
+<li>startTime: 指定时间。</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gainNode.gain.setValueAtTime(<span class="number">0.5</span>, ctx.currentTime + <span class="number">0</span>);</span><br><span class="line">gainNode.gain.setValueAtTime(<span class="number">1.0</span>, ctx.currentTime + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>上述代码将在0秒处设置关键帧，音量为0.5。然后在1秒处设置关键帧，音量为1.0。</p>
+<p>音量与时间的关系如下图所示：</p>
+<p><img src="/web-audio-api-demo/guide-img/2/1.png" alt="setValueAtTime 线性图" title="setValueAtTime 线性图"></p>
+<h4 id="AudioParam-linearRampToValueAtTime-线性渐变"><a href="#AudioParam-linearRampToValueAtTime-线性渐变" class="headerlink" title="AudioParam.linearRampToValueAtTime() 线性渐变"></a>AudioParam.linearRampToValueAtTime() 线性渐变</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linearRampToValueAtTime(value, endTime)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>把数值<strong>线性渐变</strong>到指定值</li>
+<li>value: 指定值</li>
+<li>endTime: 指定时间</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gainNode.gain.setValueAtTime(<span class="number">0.5</span>, ctx.currentTime + <span class="number">0</span>);</span><br><span class="line">gainNode.gain.linearRampToValueAtTime(<span class="number">1.0</span>, ctx.currentTime + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>上述代码将在0秒处设置关键帧，音量为0.5。然后在1秒处设置<strong>线性渐变关键帧</strong>，音量为1.0。于是从上一关键帧到该关键帧，音量将产生线性渐变效果。</p>
+<p>音量与时间的关系如下图所示：</p>
+<p><img src="/web-audio-api-demo/guide-img/2/2.png" alt="linearRampToValueAtTime 线性图" title="linearRampToValueAtTime 线性图"></p>
+<h4 id="AudioParam-exponentialRampToValueAtTime-指数渐变"><a href="#AudioParam-exponentialRampToValueAtTime-指数渐变" class="headerlink" title="AudioParam.exponentialRampToValueAtTime() 指数渐变"></a>AudioParam.exponentialRampToValueAtTime() 指数渐变</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exponentialRampToValueAtTime(value, endTime)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>把数值<strong>指数渐变</strong>到指定值</li>
+<li>value: 指定值</li>
+<li>endTime: 指定时间</li>
+</ul>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gainNode.gain.setValueAtTime(<span class="number">0.5</span>, ctx.currentTime + <span class="number">0</span>);</span><br><span class="line">gainNode.gain.exponentialRampToValueAtTime(<span class="number">1.0</span>, ctx.currentTime + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>上述代码将在0秒处设置关键帧，音量为0.5。然后在1秒处设置<strong>指数渐变关键帧</strong>，音量为1.0。于是从上一关键帧到该关键帧，音量将产生指数渐变效果。</p>
+<p>音量与时间的关系图，（我画不出来 555~ 谁想办法帮画个？）</p>
+<h4 id="AudioParam-setValueCurveAtTime-平滑曲线"><a href="#AudioParam-setValueCurveAtTime-平滑曲线" class="headerlink" title="AudioParam.setValueCurveAtTime() 平滑曲线"></a>AudioParam.setValueCurveAtTime() 平滑曲线</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setValueCurveAtTime(values, startTime, duration)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在一段时间之内按照数组内的值一个个地平滑变化</li>
+<li>values: (数组)指定值</li>
+<li>startTime: 开始时间</li>
+<li>duration: 持续时长</li>
+</ul>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gainNode.gain.setValueCurveAtTime([0.0,0.2,0.5,0.1], ctx.currentTime + 0, 10);</span><br></pre></td></tr></table></figure>
+<p>上述代码将在10秒内，音量以 0.0→0.2→0.5→0.1 平滑过渡。</p>
+<p>音量与时间的关系图，（我画不出来 555~ 谁想办法帮画个？）</p>
+<h4 id="AudioParam-一个例子"><a href="#AudioParam-一个例子" class="headerlink" title="AudioParam 一个例子"></a>AudioParam 一个例子</h4><p><img src="/web-audio-api-demo/guide-img/2/audioparam-automation1.png" alt="AudioParam 例子" title="AudioParam 例子"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t0 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> t1 = <span class="number">0.1</span>;</span><br><span class="line"><span class="keyword">var</span> t2 = <span class="number">0.2</span>;</span><br><span class="line"><span class="keyword">var</span> t3 = <span class="number">0.3</span>;</span><br><span class="line"><span class="keyword">var</span> t4 = <span class="number">0.4</span>;</span><br><span class="line"><span class="keyword">var</span> t5 = <span class="number">0.6</span>;</span><br><span class="line"><span class="keyword">var</span> t6 = <span class="number">0.7</span>;</span><br><span class="line"><span class="keyword">var</span> t7 = <span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> curveLength = <span class="number">44100</span>;</span><br><span class="line"><span class="keyword">var</span> curve = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(curveLength);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; curveLength; ++i) &#123;</span><br><span class="line">    curve[i] = <span class="built_in">Math</span>.sin(<span class="built_in">Math</span>.PI * i / curveLength);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">param.setValueAtTime(<span class="number">0.2</span>, t0);</span><br><span class="line">param.setValueAtTime(<span class="number">0.3</span>, t1);</span><br><span class="line">param.setValueAtTime(<span class="number">0.4</span>, t2);</span><br><span class="line">param.linearRampToValueAtTime(<span class="number">1</span>, t3);</span><br><span class="line">param.linearRampToValueAtTime(<span class="number">0.15</span>, t4);</span><br><span class="line">param.exponentialRampToValueAtTime(<span class="number">0.75</span>, t5);</span><br><span class="line">param.exponentialRampToValueAtTime(<span class="number">0.05</span>, t6);</span><br><span class="line">param.setValueCurveAtTime(curve, t6, t7 - t6);</span><br></pre></td></tr></table></figure>
+<p>（本例来源：<a href="https://webaudio.github.io/web-audio-api/#audioparam-automation-example" target="_blank">https://webaudio.github.io/web-audio-api/#audioparam-automation-example</a>）</p>
+<h3 id="DynamicsCompressorNode-动态压缩器"><a href="#DynamicsCompressorNode-动态压缩器" class="headerlink" title="DynamicsCompressorNode 动态压缩器"></a>DynamicsCompressorNode 动态压缩器</h3><p>这是一个动态混音器，用于把多个音源实时混音，并防止爆音。</p>
+<p><strong>创建方法：</strong><code>ctx.createDynamicsCompressor()</code></p>
+<p><strong>用法：</strong>直接把多个音源 connect 到这个Node即可。</p>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> compressorNode = ctx.createDynamicsCompressor();</span><br><span class="line">sourceNode1.connect(compressorNode);</span><br><span class="line">sourceNode2.connect(compressorNode);</span><br><span class="line">sourceNode3.connect(compressorNode);</span><br><span class="line">compressorNode.connect(ctx.destination);</span><br></pre></td></tr></table></figure>
+<p>虽然可以把多个 Node 直接 connect 到 ctx.destination，但是不建议这么做，因为这样可能会出现爆音现象。若有同时播放多个声音的需求（例如一个游戏的各种音效），记得<strong>通过 DynamicsCompressorNode 混合多个声音</strong>。</p>
+<h2 id="接下来"><a href="#接下来" class="headerlink" title="接下来"></a>接下来</h2><p>下一节：<a href="/2017/03/15/Web-Audio-API-Guide-About-Sound/">Web Audio API 小教程(4): 一些声音常识</a></p>
+<p>在继续介绍 Web Audio API 的高级玩法之前，我觉得有必要先普及一些声音常识。因为有些高级玩法要求一些乐理知识。</p>
+<p>所以，下一节没有代码。</p>
+<h2 id="一个更好的选择"><a href="#一个更好的选择" class="headerlink" title="一个更好的选择"></a>一个更好的选择</h2><p>如果觉得 Web Audio API 写起来代码量太大，那么可以考虑使用我已经封装好的 Javascript 库 —— <strong>Benz Audio Engine</strong>。</p>
+<p>项目 Github：<a href="https://github.com/BenzLeung/benz-audio-engine" target="_blank" rel="noopener">https://github.com/BenzLeung/benz-audio-engine</a></p>
+<p>这个库<strong>仅仅</strong>使用了本节所提到的3个 Node 。简单、干净，没有多余的功能。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a href="https://webaudio.github.io/web-audio-api/" target="_blank" rel="noopener">Web Audio API W3C Working Draft</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://upload.jianshu.io/users/qrcodes/5831473/qrcode_for_gh_c16fba82ac82_430.jpg" alt="Benz Leung wechat" style="width: 200px; max-width: 100%;"/>
+    <div>同步更新的微信公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web-Audio-API/" rel="tag"># Web Audio API</a>
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+            <a href="/tags/Web-Audio-API-小教程/" rel="tag"># Web Audio API 小教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/Web-Audio-API-Guide-2/" rel="next" title="Web Audio API 小教程(2): 入门篇">
+                <i class="fa fa-chevron-left"></i> Web Audio API 小教程(2): 入门篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/15/Web-Audio-API-Guide-4/" rel="prev" title="Web Audio API 小教程(4): 一些声音常识">
+                Web Audio API 小教程(4): 一些声音常识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4"
+                alt="Benz Leung" />
+            
+              <p class="site-author-name" itemprop="name">Benz Leung</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AudioNode-回顾"><span class="nav-number">1.</span> <span class="nav-text">AudioNode 回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#种类"><span class="nav-number">1.2.</span> <span class="nav-text">种类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的-Node-详解"><span class="nav-number">2.</span> <span class="nav-text">常用的 Node 详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SourceNode"><span class="nav-number">2.1.</span> <span class="nav-text">SourceNode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SourceNode-start-开始播放"><span class="nav-number">2.1.1.</span> <span class="nav-text">SourceNode.start() 开始播放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SourceNode-stop-结束"><span class="nav-number">2.1.2.</span> <span class="nav-text">SourceNode.stop() 结束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SourceNode-loop-loopStart-loopEnd-循环播放设定"><span class="nav-number">2.1.3.</span> <span class="nav-text">SourceNode.loop / loopStart / loopEnd 循环播放设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SourceNode-onended-播放完毕事件"><span class="nav-number">2.1.4.</span> <span class="nav-text">SourceNode.onended 播放完毕事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GainNode-音量调节器"><span class="nav-number">2.2.</span> <span class="nav-text">GainNode 音量调节器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GainNode-gain"><span class="nav-number">2.2.1.</span> <span class="nav-text">GainNode.gain</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AudioParam"><span class="nav-number">2.3.</span> <span class="nav-text">AudioParam</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-value"><span class="nav-number">2.3.1.</span> <span class="nav-text">AudioParam.value</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-setValueAtTime"><span class="nav-number">2.3.2.</span> <span class="nav-text">AudioParam.setValueAtTime()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-linearRampToValueAtTime-线性渐变"><span class="nav-number">2.3.3.</span> <span class="nav-text">AudioParam.linearRampToValueAtTime() 线性渐变</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-exponentialRampToValueAtTime-指数渐变"><span class="nav-number">2.3.4.</span> <span class="nav-text">AudioParam.exponentialRampToValueAtTime() 指数渐变</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-setValueCurveAtTime-平滑曲线"><span class="nav-number">2.3.5.</span> <span class="nav-text">AudioParam.setValueCurveAtTime() 平滑曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioParam-一个例子"><span class="nav-number">2.3.6.</span> <span class="nav-text">AudioParam 一个例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DynamicsCompressorNode-动态压缩器"><span class="nav-number">2.4.</span> <span class="nav-text">DynamicsCompressorNode 动态压缩器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来"><span class="nav-number">3.</span> <span class="nav-text">接下来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个更好的选择"><span class="nav-number">4.</span> <span class="nav-text">一个更好的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Benz Leung</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'BenzLeung',
+            repo: 'benzleung-blog-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6d1d923393f62d3413da000ba8a2381dddca33c3',
+            
+                client_id: '57af0f5af37fe8a7e93a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

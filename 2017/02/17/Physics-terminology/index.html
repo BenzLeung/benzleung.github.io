@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="同步更新：Github Wiki 我在学习 chipmunk 物理引擎的过程中，感觉到了明显的困难。估计很大可能是受限于我的英文水平和物理知识了。于是特开此帖，记录学习过程中遇到的物理专业术语。内容不断更新。  segment 线段 box 矩形 circle 圆形 polygon （通常缩写 poly） 多边形 moment 转动惯量 body 物体 shape 形状 vector （通常缩写">
+<meta name="keywords" content="chipmunk.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录一些物理学术语和翻译">
+<meta property="og:url" content="https://benzleung.github.io/2017/02/17/Physics-terminology/index.html">
+<meta property="og:site_name" content="Benz Leung">
+<meta property="og:description" content="同步更新：Github Wiki 我在学习 chipmunk 物理引擎的过程中，感觉到了明显的困难。估计很大可能是受限于我的英文水平和物理知识了。于是特开此帖，记录学习过程中遇到的物理专业术语。内容不断更新。  segment 线段 box 矩形 circle 圆形 polygon （通常缩写 poly） 多边形 moment 转动惯量 body 物体 shape 形状 vector （通常缩写">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-19T08:40:04.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记录一些物理学术语和翻译">
+<meta name="twitter:description" content="同步更新：Github Wiki 我在学习 chipmunk 物理引擎的过程中，感觉到了明显的困难。估计很大可能是受限于我的英文水平和物理知识了。于是特开此帖，记录学习过程中遇到的物理专业术语。内容不断更新。  segment 线段 box 矩形 circle 圆形 polygon （通常缩写 poly） 多边形 moment 转动惯量 body 物体 shape 形状 vector （通常缩写">
+
+
+
+
+
+
+  <link rel="canonical" href="https://benzleung.github.io/2017/02/17/Physics-terminology/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>记录一些物理学术语和翻译 | Benz Leung</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?08e7568514d4ec603eb05778e56aef48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Benz Leung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/BenzLeung" class="github-corner" target="_blank" title="My GitHub" aria-label="My GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://benzleung.github.io/2017/02/17/Physics-terminology/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Benz Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Benz Leung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记录一些物理学术语和翻译
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-17 11:18:04" itemprop="dateCreated datePublished" datetime="2017-02-17T11:18:04+08:00">2017-02-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-06-19 16:40:04" itemprop="dateModified" datetime="2018-06-19T16:40:04+08:00">2018-06-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/17/Physics-terminology/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2017/02/17/Physics-terminology/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>同步更新：<a href="https://github.com/BenzLeung/cocos2d-js-demo/wiki/%E7%89%A9%E7%90%86%E5%AD%A6%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD%E6%94%B6%E9%9B%86" target="_blank" rel="noopener">Github Wiki</a></p>
+<p>我在学习 chipmunk 物理引擎的过程中，感觉到了明显的困难。估计很大可能是受限于我的英文水平和物理知识了。于是特开此帖，记录学习过程中遇到的物理专业术语。内容不断更新。</p>
+<ul>
+<li>segment 线段</li>
+<li>box 矩形</li>
+<li>circle 圆形</li>
+<li>polygon （通常缩写 poly） 多边形</li>
+<li>moment 转动惯量</li>
+<li>body 物体</li>
+<li>shape 形状</li>
+<li>vector （通常缩写 vect） 向量、矢量，在 chipmunk 中还用来表示点的坐标（因为向量和坐标都是x和y）</li>
+<li>vertex （通常缩写 vert） 顶点（多边形的），我已华丽丽地与 vect 混淆</li>
+<li>area 面积</li>
+<li>elasticity 弹性、弹性系数</li>
+<li>friction 摩擦力、摩擦系数</li>
+</ul>
+<a id="more"></a>
+<hr>
+<h3 id="segment-线段"><a href="#segment-线段" class="headerlink" title="segment 线段"></a>segment 线段</h3><p>在 chipmunk 中，一般使用线段来建造墙壁。</p>
+<p>线段也可以有面积，chipmunk 提供一个 function ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; a 顶点坐标</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; b 另一顶点坐标</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; r 线段粗细的一半（半径）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">cp.areaForSegment = <span class="function"><span class="keyword">function</span>(<span class="params">a, b, r</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> r*(<span class="built_in">Math</span>.PI*r + <span class="number">2</span>*vdist(a, b));</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以上代码是从 chipmunk 的源代码取出来的（代码里的注释是我加的）。从源代码看，chipmunk 把线段的两端当成了圆，所以 r 是两端的圆的半径。</p>
+<h3 id="moment-转动惯量"><a href="#moment-转动惯量" class="headerlink" title="moment 转动惯量"></a>moment 转动惯量</h3><p><a href="">https://zh.wikipedia.org/wiki/%E8%BD%89%E5%8B%95%E6%85%A3%E9%87%8F</a></p>
+<p><a href="">https://www.zhihu.com/question/24218339</a></p>
+<p>转动惯量是一个物体对于其旋转运动的惯性大小的量度。</p>
+<p>chipmunk 在创建物体（Body）的时候需要指定转动惯量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; m 质量</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; i 转动惯量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> cp.Body(m, i);</span><br></pre></td></tr></table></figure>
+<p>chipmunk 提供了计算物体转动惯量的 function，一般而言套用公式就好了。</p>
+<p>圆形/圆环的转动惯量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; m 质量</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; r1 内环的半径，如果是实心圆，请指定为 0</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; r2 外环的半径</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; offset 重心的偏移向量，可以把圆的重心弄偏。</span></span><br><span class="line"><span class="comment"> *      若不需要弄偏重心，请指定为 cp.vzero （零向量）</span></span><br><span class="line"><span class="comment"> * @return &#123;Number&#125; 转动惯量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> i = cp.momentForCircle(m, r1, r2, offset);</span><br></pre></td></tr></table></figure>
+<p>矩形的转动惯量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; m 质量</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; width 矩形的宽</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; height 矩形的高</span></span><br><span class="line"><span class="comment"> * @return &#123;Number&#125; 转动惯量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> i = cp.momentForBox(m, width, height);</span><br></pre></td></tr></table></figure>
+<p>线段的转动惯量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; m 质量</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; a 顶点坐标</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; b 另一顶点坐标</span></span><br><span class="line"><span class="comment"> * @return &#123;Number&#125; 转动惯量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> i = cp.momentForSegment(m, a, b);</span><br></pre></td></tr></table></figure>
+<p>多边形的转动惯量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; m 质量</span></span><br><span class="line"><span class="comment"> * @param &#123;Array.&lt;cp.Vect&gt;&#125; verts 顶点坐标数组，数组至少包含3个值</span></span><br><span class="line"><span class="comment"> * @param &#123;cp.Vect&#125; offset 重心的偏移量，chipmunk 会自动计算多边形的</span></span><br><span class="line"><span class="comment"> *      质心（即无偏移的重心），这个值可以把正常的重心给弄偏。若不需要</span></span><br><span class="line"><span class="comment"> *      弄偏重心，请指定为 cp.vzero （零向量）</span></span><br><span class="line"><span class="comment"> * @return &#123;Number&#125; 转动惯量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> i = cp.momentForPoly(m, verts, offset);</span><br></pre></td></tr></table></figure>
+<p>todo: 尚未清楚如果不套用公式，自己指定转动惯量的话，会有些什么有趣的效果。</p>
+<h3 id="vector-向量、矢量"><a href="#vector-向量、矢量" class="headerlink" title="vector 向量、矢量"></a>vector 向量、矢量</h3><p>在 chipmunk 中，向量是个类/对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; x 横向值</span></span><br><span class="line"><span class="comment"> * @param &#123;Number&#125; y 纵向值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> cp.Vect(x, y);</span><br></pre></td></tr></table></figure>
+<p>由于<strong>坐标点</strong>和向量都是 x 和 y 值，所以 chipmunk 也把这个向量用作坐标点的表示。</p>
+<hr>
+<p>持续更新中…</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://upload.jianshu.io/users/qrcodes/5831473/qrcode_for_gh_c16fba82ac82_430.jpg" alt="Benz Leung wechat" style="width: 200px; max-width: 100%;"/>
+    <div>同步更新的微信公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/chipmunk-js/" rel="tag"># chipmunk.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/16/Circle-War-Physics/" rel="next" title="《圆圈大战》碰碰版">
+                <i class="fa fa-chevron-left"></i> 《圆圈大战》碰碰版
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/08/Funny-Billards/" rel="prev" title="游戏：欢乐台球">
+                游戏：欢乐台球 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4"
+                alt="Benz Leung" />
+            
+              <p class="site-author-name" itemprop="name">Benz Leung</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#segment-线段"><span class="nav-number">1.</span> <span class="nav-text">segment 线段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#moment-转动惯量"><span class="nav-number">2.</span> <span class="nav-text">moment 转动惯量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vector-向量、矢量"><span class="nav-number">3.</span> <span class="nav-text">vector 向量、矢量</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Benz Leung</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'BenzLeung',
+            repo: 'benzleung-blog-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6d1d923393f62d3413da000ba8a2381dddca33c3',
+            
+                client_id: '57af0f5af37fe8a7e93a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

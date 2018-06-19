@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="（续上节：Web Audio API 小教程(3): 初级使用篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 在学习《进阶篇》之前，有必要先科普一些声音常识。 音乐理论常识">
+<meta name="keywords" content="Web Audio API,Javascript,Web Audio API 小教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web Audio API 小教程(4): 一些声音常识">
+<meta property="og:url" content="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-4/index.html">
+<meta property="og:site_name" content="Benz Leung">
+<meta property="og:description" content="（续上节：Web Audio API 小教程(3): 初级使用篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 在学习《进阶篇》之前，有必要先科普一些声音常识。 音乐理论常识">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/1.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/2x3.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/4x5.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/6x7.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/8.png">
+<meta property="og:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/9.png">
+<meta property="og:updated_time" content="2018-06-19T08:40:04.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web Audio API 小教程(4): 一些声音常识">
+<meta name="twitter:description" content="（续上节：Web Audio API 小教程(3): 初级使用篇）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 在学习《进阶篇》之前，有必要先科普一些声音常识。 音乐理论常识">
+<meta name="twitter:image" content="https://benzleung.github.io/web-audio-api-demo/guide-img/3/1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-4/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Web Audio API 小教程(4): 一些声音常识 | Benz Leung</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?08e7568514d4ec603eb05778e56aef48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Benz Leung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/BenzLeung" class="github-corner" target="_blank" title="My GitHub" aria-label="My GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Benz Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Benz Leung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web Audio API 小教程(4): 一些声音常识
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-15 20:28:01" itemprop="dateCreated datePublished" datetime="2017-03-15T20:28:01+08:00">2017-03-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-06-19 16:40:04" itemprop="dateModified" datetime="2018-06-19T16:40:04+08:00">2018-06-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/15/Web-Audio-API-Guide-4/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2017/03/15/Web-Audio-API-Guide-4/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>（续上节：<a href="/2017/03/15/Web-Audio-API-Guide-Primary-User/">Web Audio API 小教程(3): 初级使用篇</a>）</p>
+<ul>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Preface/">(0): 序言与目录</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-What-can-it-do/">(1): 它能做什么？</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Getting-Started/">(2): 入门篇</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Primary-User/">(3): 初级使用篇</a></li>
+<li><strong>(4): 一些声音常识</strong></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Advanced-User/">(5): 进阶篇</a></li>
+</ul>
+<p><a href="https://benzleung.gitbooks.io/web-audio-api-mini-guide/" target="_blank" rel="noopener">【Gitbook 版本】</a></p>
+<p>在学习《进阶篇》之前，有必要先科普一些声音常识。</p>
+<h2 id="音乐理论常识"><a href="#音乐理论常识" class="headerlink" title="音乐理论常识"></a>音乐理论常识</h2><a id="more"></a>
+<h3 id="乐音与噪音"><a href="#乐音与噪音" class="headerlink" title="乐音与噪音"></a>乐音与噪音</h3><p><strong>乐音</strong>：能明显分辨出音色、音高的声音，例如钢琴、小提琴、古筝等等。</p>
+<p><strong>噪音</strong>：混乱的，难以分辨音高的声音，例如锣、鼓、爆炸声、瀑布声等等。</p>
+<h3 id="乐音的三要素"><a href="#乐音的三要素" class="headerlink" title="乐音的三要素"></a>乐音的三要素</h3><p><strong>音色</strong>：表示声音用什么乐器发声的，例如钢琴和小提琴的音色不一样。</p>
+<p><strong>响度</strong>：就是音量啦。</p>
+<p><strong>音高</strong>：跟我一起唱~ do re mi fa so la xi do ~~~</p>
+<hr>
+<h2 id="声音物理学常识"><a href="#声音物理学常识" class="headerlink" title="声音物理学常识"></a>声音物理学常识</h2><h3 id="声波"><a href="#声波" class="headerlink" title="声波"></a>声波</h3><p><img src="/web-audio-api-demo/guide-img/3/1.png" alt="声波" title="声波"></p>
+<p>上图就是声波的样子。</p>
+<h3 id="乐音的声波"><a href="#乐音的声波" class="headerlink" title="乐音的声波"></a>乐音的声波</h3><p><strong>音色 - 形状</strong>：声波的形状决定音色。</p>
+<p><img src="/web-audio-api-demo/guide-img/3/2x3.png" alt="三角波：嘟———— (VS) 方形波：滴————" title="三角波：嘟———— (VS) 方形波：滴————"></p>
+<p><strong>响度 - 振幅</strong>：声波的振幅决定响度（音量）。</p>
+<p><img src="/web-audio-api-demo/guide-img/3/4x5.png" alt="音量较大 (VS) 音量较小" title="音量较大 (VS) 音量较小"></p>
+<p><strong>音高 - 频率</strong>：声波的频率决定音高。</p>
+<p><img src="/web-audio-api-demo/guide-img/3/6x7.png" alt="低音： do ~~ (VS) 高音： la ~~" title="低音： do ~~ (VS) 高音： la ~~"></p>
+<hr>
+<h2 id="声音的数字化常识"><a href="#声音的数字化常识" class="headerlink" title="声音的数字化常识"></a>声音的数字化常识</h2><h3 id="声音的数字化采样"><a href="#声音的数字化采样" class="headerlink" title="声音的数字化采样"></a>声音的数字化采样</h3><p>看图说话：</p>
+<p><img src="/web-audio-api-demo/guide-img/3/8.png" alt="声波的采样" title="声波的采样"></p>
+<p>声波是一条连续的波形曲线，要把声波存储到硬盘里，就要把这条曲线转换成数字。</p>
+<p>这个声波转换成数字的过程，称为<strong>数字化采样</strong>，简称<strong>采样</strong>。</p>
+<p>上图是一段声波的第3.767秒到第3.768秒之间的采样。</p>
+<p>就在这0.001秒，即1毫秒之间，采集了40+个点，把每个点的Y轴的对应值记录下来，然后把这一串数值按顺序存储到硬盘里，就变成了<strong>WAV格式</strong>的声音文件。</p>
+<h3 id="采样率"><a href="#采样率" class="headerlink" title="采样率"></a>采样率</h3><p>采样率就是1秒之内采样了多少个点，单位是 <strong>Hz</strong> 。</p>
+<p>一般网上下载到的MP3音乐，其采样率一般是 44100 Hz。也就是说，1秒钟采样了 44100 个点。</p>
+<p>看图说话：</p>
+<p><img src="/web-audio-api-demo/guide-img/3/9.png" alt="文件格式" title="文件格式"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">文件格式: 44100Hz, 16 位, 立体声</span><br></pre></td></tr></table></figure>
+<p>这一行信息的意思是，每秒钟采样了44100个点，每个点占16位，16位就是2字节。</p>
+<p>所以每秒钟需要占用空间 44100x2=88200 字节，就是大约 88 KB。</p>
+<p>而由于这是立体声的，占两个声道，所以两个声道加起来，每秒钟就是大约 176 KB。</p>
+<p>所以，如果这个声音文件是WAV格式的，那么它每秒钟占用大约 176 KB，一分钟就是 176x60=10560 KB。</p>
+<h3 id="比特率"><a href="#比特率" class="headerlink" title="比特率"></a>比特率</h3><p>比特率表示每秒钟占用多少硬盘空间，单位是 <strong>Kbps</strong> ，把这个单位展开成英文就是“Kbit per second”，中文意思是“<strong>千比特每秒</strong>”。</p>
+<p>例如，128 Kbps 意思是每秒占用空间 128 Kbit。</p>
+<p>1个bit就是二进制数字中的1位，所以 <code>8bit=1字节</code> 。</p>
+<p>所以，128 Kbit 就是 16 KB （128 / 8 = 16）。</p>
+<p>所以，128 Kbps 就是 16 KB/s ，即每秒占 16 KB。</p>
+<p>每秒 16 KB，那么每分钟就是 960 KB 。所以，如果是 128 Kbps 的 MP3，一首3分钟的歌曲大约占用不到 3 MB 左右。</p>
+<p>如果使用不压缩的 WAV 格式，根据上文所述，那么“44100Hz, 16 位, 立体声”的WAV文件就是 176 KB/s ，即比特率就是 1408 Kbps。</p>
+<p><strong>比特率是用来衡量声音文件的压缩率的</strong>。比特率越小，文件越小，压缩率越高。</p>
+<p>对于同一种声音文件格式，比特率越小代表音质越差。但要是文件格式不一样，比特率就不能用来对比音质了。</p>
+<h3 id="MP3"><a href="#MP3" class="headerlink" title="MP3"></a>MP3</h3><p>一种最常见的声音文件格式，比特率范围是 30 - 320 Kbps。</p>
+<p>网上最流行 128 Kbps。</p>
+<p>现在 MP3 已经被所有浏览器所支持了。（<a href="https://caniuse.com/#feat=mp3" target="_blank" rel="noopener">Can I Use: MP3</a>）</p>
+<h3 id="WMA"><a href="#WMA" class="headerlink" title="WMA"></a>WMA</h3><p>在2000年-2010年之间还蛮常见的一种声音格式，由微软公司发明。</p>
+<p>当时被很多 MP3 随身听支持，压缩率比 MP3 高。即 WMA 的 64 Kbps 的音质大概相当于 MP3 128 Kbps（<a href="https://zh.wikipedia.org/wiki/Windows_Media_Audio" target="_blank" rel="noopener">维基百科：WMA</a>）。</p>
+<p>但是可能由于微软开出版权费过高（我猜的），所以现在的浏览器全都不支持了。</p>
+<h3 id="AAC"><a href="#AAC" class="headerlink" title="AAC"></a>AAC</h3><p>一种网上不太常见但是兼容性最接近 MP3 的声音文件格式。常见扩展名有 <code>.aac</code> <code>.mp4</code> <code>.m4a</code> <code>.3gp</code>。</p>
+<p>这是 MP3 的继承者，都是 MPEG 系列的标准，因此一般来说只要支持 MP3 的浏览器都能支持 AAC。</p>
+<p>AAC 的压缩率几乎肯定比 MP3 高，但是能高多少取决于压缩软件是否给力，因为根据<a href="https://zh.wikipedia.org/wiki/%E9%80%B2%E9%9A%8E%E9%9F%B3%E8%A8%8A%E7%B7%A8%E7%A2%BC" target="_blank" rel="noopener">维基百科</a>的描述，AAC是个庞大家族，有很多种AAC，压缩率参差不齐。</p>
+<p>不过无论如何，在Web端，AAC 确实是一种比 MP3 更省网络流量的选择。</p>
+<p>现在 AAC 也已经被所有浏览器所支持了（<a href="https://caniuse.com/#feat=aac" target="_blank" rel="noopener">Can I Use: AAC</a>），所以以后都不需要用 MP3 了，放心地用 AAC 吧。</p>
+<hr>
+<h2 id="接下来…"><a href="#接下来…" class="headerlink" title="接下来…"></a>接下来…</h2><p>下一节：<a href="/2017/03/15/Web-Audio-API-Guide-Advanced-User/">Web Audio API 小教程(5): 进阶篇</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://upload.jianshu.io/users/qrcodes/5831473/qrcode_for_gh_c16fba82ac82_430.jpg" alt="Benz Leung wechat" style="width: 200px; max-width: 100%;"/>
+    <div>同步更新的微信公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web-Audio-API/" rel="tag"># Web Audio API</a>
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+            <a href="/tags/Web-Audio-API-小教程/" rel="tag"># Web Audio API 小教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/Web-Audio-API-Guide-3/" rel="next" title="Web Audio API 小教程(3): 初级使用篇">
+                <i class="fa fa-chevron-left"></i> Web Audio API 小教程(3): 初级使用篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/15/Web-Audio-API-Guide-5/" rel="prev" title="Web Audio API 小教程(5): 进阶篇（更多API）">
+                Web Audio API 小教程(5): 进阶篇（更多API） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4"
+                alt="Benz Leung" />
+            
+              <p class="site-author-name" itemprop="name">Benz Leung</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#音乐理论常识"><span class="nav-number">1.</span> <span class="nav-text">音乐理论常识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#乐音与噪音"><span class="nav-number">1.1.</span> <span class="nav-text">乐音与噪音</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乐音的三要素"><span class="nav-number">1.2.</span> <span class="nav-text">乐音的三要素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声音物理学常识"><span class="nav-number">2.</span> <span class="nav-text">声音物理学常识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#声波"><span class="nav-number">2.1.</span> <span class="nav-text">声波</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乐音的声波"><span class="nav-number">2.2.</span> <span class="nav-text">乐音的声波</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声音的数字化常识"><span class="nav-number">3.</span> <span class="nav-text">声音的数字化常识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#声音的数字化采样"><span class="nav-number">3.1.</span> <span class="nav-text">声音的数字化采样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#采样率"><span class="nav-number">3.2.</span> <span class="nav-text">采样率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比特率"><span class="nav-number">3.3.</span> <span class="nav-text">比特率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MP3"><span class="nav-number">3.4.</span> <span class="nav-text">MP3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WMA"><span class="nav-number">3.5.</span> <span class="nav-text">WMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AAC"><span class="nav-number">3.6.</span> <span class="nav-text">AAC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来…"><span class="nav-number">4.</span> <span class="nav-text">接下来…</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Benz Leung</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'BenzLeung',
+            repo: 'benzleung-blog-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6d1d923393f62d3413da000ba8a2381dddca33c3',
+            
+                client_id: '57af0f5af37fe8a7e93a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

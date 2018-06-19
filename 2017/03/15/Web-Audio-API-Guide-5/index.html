@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="（续上节：Web Audio API 小教程(4): 一些声音常识）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 这一节主要列出一些 API ，这些 API 或者是我觉得比较好玩的，或者是我觉得在做音乐播放器或者游戏时有很大可能用得着的。 Web Audio API 中每个 API 可">
+<meta name="keywords" content="Web Audio API,Javascript,Web Audio API 小教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web Audio API 小教程(5): 进阶篇（更多API）">
+<meta property="og:url" content="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-5/index.html">
+<meta property="og:site_name" content="Benz Leung">
+<meta property="og:description" content="（续上节：Web Audio API 小教程(4): 一些声音常识）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 这一节主要列出一些 API ，这些 API 或者是我觉得比较好玩的，或者是我觉得在做音乐播放器或者游戏时有很大可能用得着的。 Web Audio API 中每个 API 可">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-19T08:40:04.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web Audio API 小教程(5): 进阶篇（更多API）">
+<meta name="twitter:description" content="（续上节：Web Audio API 小教程(4): 一些声音常识）  (0): 序言与目录 (1): 它能做什么？ (2): 入门篇 (3): 初级使用篇 (4): 一些声音常识 (5): 进阶篇  【Gitbook 版本】 这一节主要列出一些 API ，这些 API 或者是我觉得比较好玩的，或者是我觉得在做音乐播放器或者游戏时有很大可能用得着的。 Web Audio API 中每个 API 可">
+
+
+
+
+
+
+  <link rel="canonical" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-5/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Web Audio API 小教程(5): 进阶篇（更多API） | Benz Leung</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?08e7568514d4ec603eb05778e56aef48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Benz Leung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/BenzLeung" class="github-corner" target="_blank" title="My GitHub" aria-label="My GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://benzleung.github.io/2017/03/15/Web-Audio-API-Guide-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Benz Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Benz Leung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web Audio API 小教程(5): 进阶篇（更多API）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-15 20:30:14" itemprop="dateCreated datePublished" datetime="2017-03-15T20:30:14+08:00">2017-03-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-06-19 16:40:04" itemprop="dateModified" datetime="2018-06-19T16:40:04+08:00">2018-06-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/15/Web-Audio-API-Guide-5/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2017/03/15/Web-Audio-API-Guide-5/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>（续上节：<a href="/2017/03/15/Web-Audio-API-Guide-About-Sound/">Web Audio API 小教程(4): 一些声音常识</a>）</p>
+<ul>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Preface/">(0): 序言与目录</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-What-can-it-do/">(1): 它能做什么？</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Getting-Started/">(2): 入门篇</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-Primary-User/">(3): 初级使用篇</a></li>
+<li><a href="/2017/03/15/Web-Audio-API-Guide-About-Sound/">(4): 一些声音常识</a></li>
+<li><strong>(5): 进阶篇</strong></li>
+</ul>
+<p><a href="https://benzleung.gitbooks.io/web-audio-api-mini-guide/" target="_blank" rel="noopener">【Gitbook 版本】</a></p>
+<p>这一节主要列出一些 API ，这些 API 或者是我觉得比较好玩的，或者是我觉得在做音乐播放器或者游戏时有很大可能用得着的。</p>
+<p>Web Audio API 中每个 API 可能有很多专业的高级属性和方法，有些（我认为）比较难用到的这里就省略了。</p>
+<p>这里列出的 API 都有我自制的 Demo，纯手工制作，如有雷同，纯属巧合。</p>
+<a id="more"></a>
+<p><strong><a href="/web-audio-api-demo/">【全部 Demo 的目录】</a></strong></p>
+<hr>
+<h3 id="DynamicsCompressor-动态混音"><a href="#DynamicsCompressor-动态混音" class="headerlink" title="DynamicsCompressor - 动态混音"></a>DynamicsCompressor - 动态混音</h3><p><strong><a href="/web-audio-api-demo/mix.html">【Demo】</a></strong></p>
+<p>用于把多个音源实时混音，并防止爆音。</p>
+<p><strong>对象创建方法：</strong><code>ctx.createDynamicsCompressor()</code></p>
+<p><strong>用法：</strong>直接把多个音源 connect 到这个Node即可。</p>
+<p>虽然可以把多个 Node 直接 connect 到 ctx.destination，但是不建议这么做，因为这样可能会出现爆音现象。若有同时播放多个声音的需求（例如一个游戏的各种音效），记得<strong>通过 DynamicsCompressorNode 混合多个声音</strong>。</p>
+<hr>
+<h3 id="Panner-3D立体环绕音效"><a href="#Panner-3D立体环绕音效" class="headerlink" title="Panner - 3D立体环绕音效"></a>Panner - 3D立体环绕音效</h3><p><strong><a href="/web-audio-api-demo/panner.html">【Demo】</a></strong></p>
+<p>把声音的声源移动到3D空间中指定的点 (x, y, z)，模拟3D空间音效。</p>
+<p>可以在声音播放期间实时调整空间坐标值 (x, y, z)，让声音绕着你转圈圈。</p>
+<p><strong>对象创建方法：</strong><code>ctx.createPanner()</code></p>
+<p><strong>常用属性方法：</strong></p>
+<ul>
+<li><strong>PannerNode.setPosition(x, y, z)</strong><ul>
+<li>设置声源空间位置 (x, y, z)。(x, y, z)是代表位置的坐标值。</li>
+</ul>
+</li>
+<li><strong>PannerNode.setOrientation(x, y, z)</strong><ul>
+<li>设置声源的朝向 (x, y, z)。(x, y, z)是代表方向的向量值。一个人背对你说话和正对你说话，效果是不一样的。</li>
+</ul>
+</li>
+<li><strong>PannerNode.setVelocity(x, y, z)</strong><ul>
+<li>设置声源的运动方向和速度 (x, y, z)。(x, y, z)是代表方向和速度的向量值。一个人站着说话和一边跑步一边说话，效果也是不一样的。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="BiquadFilter-滤波器、均衡器"><a href="#BiquadFilter-滤波器、均衡器" class="headerlink" title="BiquadFilter - 滤波器、均衡器"></a>BiquadFilter - 滤波器、均衡器</h3><p><strong><a href="/web-audio-api-demo/eq.html">【Demo】</a></strong></p>
+<p>过滤或增益指定频率的声波。</p>
+<p><strong>对象创建方法：</strong><code>ctx.createBiquadFilter()</code></p>
+<p><strong>常用属性方法：</strong></p>
+<ul>
+<li><strong>BiquadFilterNode.type</strong><ul>
+<li>指定滤波器类型（详见下表）</li>
+</ul>
+</li>
+<li><strong>BiquadFilterNode.frequency</strong><ul>
+<li>指定一个频率（详见下表）</li>
+</ul>
+</li>
+<li><strong>BiquadFilterNode.Q</strong><ul>
+<li>设定容许度（详见下表）</li>
+</ul>
+</li>
+<li><strong>BiquadFilterNode.gain</strong><ul>
+<li>设定增益值（详见下表）</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>用途</th>
+<th>frequency</th>
+<th>Q</th>
+<th>gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lowpass</td>
+<td>低通滤波，只允许低频声音通过。</td>
+<td>能通过的频率值界线（Hz），例如440，即只让 0-440Hz 的声音通过，削减掉 440-99999Hz 的声音。</td>
+<td>削减度，数值越小则声音削减越厉害。</td>
+<td>不可用。</td>
+</tr>
+<tr>
+<td>highpass</td>
+<td>高通滤波，只允许高频声音通过。</td>
+<td>能通过的频率值界线（Hz），例如440，即只让 440-99999Hz 的声音通过，削减掉 0-440Hz 的声音。</td>
+<td>削减度，数值越小则声音削减越厉害。</td>
+<td>不可用。</td>
+</tr>
+<tr>
+<td>peaking</td>
+<td>峰值滤波，增益或削减某一频率的声音</td>
+<td>要增益或削减的频率值<strong>中间点</strong>（Hz）。</td>
+<td>范围，例如频率 440Hz，范围Q是20，那么范围就是 430-450Hz。</td>
+<td>增益或削减度，正值增益，负值削减。</td>
+</tr>
+<tr>
+<td>bandpass, lowshelf, highshelf, notch, allpass</td>
+<td>带通滤波, 低架滤波, 高架滤波, 陷波器, 全通滤波</td>
+<td>不常用，略</td>
+<td>不常用，略</td>
+<td>不常用，略</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Analyser-频谱分析器（频谱图、时域图）"><a href="#Analyser-频谱分析器（频谱图、时域图）" class="headerlink" title="Analyser - 频谱分析器（频谱图、时域图）"></a>Analyser - 频谱分析器（频谱图、时域图）</h3><p><strong><a href="/web-audio-api-demo/analyser.html">【Demo 1，频谱图】</a></strong></p>
+<p><strong><a href="/web-audio-api-demo/analyser2.html">【Demo 2，时域图】</a></strong></p>
+<p>获得音频的频谱数据，可用于绘制频谱图（条状的）和时域图（线状的）。</p>
+<p>它不会改变声音波形，只读取波形数据。也就是说，输入和输出的声波是完全一样的，输入什么就输出什么。</p>
+<p><strong>对象创建方法：</strong><code>ctx.createAnalyser()</code></p>
+<p><strong>常用属性方法：</strong></p>
+<ul>
+<li><strong>Analyser.fftSize</strong><ul>
+<li>频谱分析下的快速傅里叶变换的大小（难理解？没事，看下一个属性就好），取值范围是 <strong>32-2048 之内 2 的整数次方</strong>，即 32、64、128、256、512、1024、2048。默认值为 2048。</li>
+</ul>
+</li>
+<li><strong>Analyser.frequencyBinCount</strong><ul>
+<li>fftSize 值的一半。这个值代表你要绘制的条形频谱图中有多少条条形。<strong>注意，这是个只读的属性</strong>，要修改这个属性的值请改 fftSize。</li>
+</ul>
+</li>
+<li><strong>Analyser.smoothingTimeConstant</strong><ul>
+<li>让频谱图的动画带有平滑过渡效果，取值范围 0.0-1.0，0.0 代表不平滑，1.0 代表很平滑。</li>
+</ul>
+</li>
+<li><strong>Analyser.getByteFrequencyData(array)</strong><ul>
+<li>把当前的即时<strong>频谱图</strong>数据复制到 array 数组里。array 数组须事先创建好，Uint8Array 类型，数组大小为 frequencyBinCount，即应该事先有以下这一代码：</li>
+<li><code>var array = new Uint8Array(analyser.frequencyBinCount);</code></li>
+</ul>
+</li>
+<li><strong>Analyser.getByteTimeDomainData(array)</strong><ul>
+<li>把当前的即时<strong>时域图</strong>数据复制到 array 数组里。array 数组须事先创建好，Uint8Array 类型，数组大小为 frequencyBinCount，即应该事先有以下这一代码：</li>
+<li><code>var array = new Uint8Array(analyser.frequencyBinCount);</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Convolver-卷积运算处理（环境混响音效）"><a href="#Convolver-卷积运算处理（环境混响音效）" class="headerlink" title="Convolver - 卷积运算处理（环境混响音效）"></a>Convolver - 卷积运算处理（环境混响音效）</h3><p><strong><a href="/web-audio-api-demo/convolution.html">【Demo】</a></strong></p>
+<p>对音频进行卷积运算，用于添加环境音效，例如房间、音乐厅、剧院、电话等等。</p>
+<p>在声学中，<strong>回声</strong>可以表示为声波与“特定波形”的<strong>卷积</strong>。</p>
+<p>这些“特定波形”可以反映房间回声、教堂回声、电话声等等，并且可以用WAV格式存储。</p>
+<p>参考：<a href="https://zh.wikipedia.org/wiki/%E5%8D%B7%E7%A7%AF" target="_blank" rel="noopener">维基百科：卷积</a></p>
+<p>（其实卷积到底是什么鬼，我也不太明白，维基百科的解释我看得似懂非懂、不明觉厉。）</p>
+<p>（总之不管卷积了，能实现环境混响音效就好 ^_^）</p>
+<p><strong>对象创建方法：</strong><code>ctx.createConvolver()</code></p>
+<p><strong>常用属性方法：</strong></p>
+<ul>
+<li><strong>ConvolverNode.buffer</strong><ul>
+<li>把需要做卷积运算的波形数据扔进这个属性，就像 SourceNode.buffer 一样个扔法。然后输入的声波将会与这个 buffer 数据进行卷积运算后输出。</li>
+</ul>
+</li>
+</ul>
+<p><strong>注1：</strong> 用于卷积运算的特定波形必须使用<strong>无损</strong>格式存储。也就是说可以是WAV格式的，但不能是MP3、AAC等有损压缩格式。</p>
+<p><strong>注2：</strong> 可以在这儿找到想要的卷积波形WAV文件——</p>
+<ul>
+<li><a href="https://github.com/GoogleChrome/web-audio-samples/tree/gh-pages/samples/audio/impulse-responses" target="_blank" rel="noopener">包括大量卷积文件的 Github</a></li>
+<li><a href="https://googlechrome.github.io/web-audio-samples/samples/audio/convolution-effects.html" target="_blank" rel="noopener">这大量卷积文件的 Demo</a></li>
+</ul>
+<hr>
+<h3 id="Oscillator-振荡器（声波生成器）"><a href="#Oscillator-振荡器（声波生成器）" class="headerlink" title="Oscillator - 振荡器（声波生成器）"></a>Oscillator - 振荡器（声波生成器）</h3><p><strong><a href="/web-audio-api-demo/oscillator.html">【Demo 1，简易电子琴】</a></strong></p>
+<p><strong><a href="/web-audio-api-demo/jinglebell.html">【Demo 2，铃儿响叮当】</a></strong></p>
+<p><strong><a href="/web-audio-api-demo/oscillator2.html">【Demo 3，各种波形对比】</a></strong></p>
+<p>发出指定频率和指定形状的声波。</p>
+<p>这是一种作为音源的 Node，没有输入（即其他Node不能connect它）。</p>
+<p><strong>对象创建方法：</strong><code>ctx.createOscillator()</code></p>
+<p><strong>常用属性方法：</strong></p>
+<ul>
+<li><strong>OscillatorNode.type</strong><ul>
+<li>指定声波类型，有五种值：方形波<code>square</code>、三角波<code>triangle</code>、正弦波<code>sine</code>、锯齿波<code>sawtooth</code>、自定义<code>custom</code>。</li>
+</ul>
+</li>
+<li><strong>OscillatorNode.frequency</strong><ul>
+<li>指定一个频率</li>
+</ul>
+</li>
+</ul>
+<p><strong>注1：</strong> 使用振荡器可以实现<strong>零流量</strong>演奏音乐，但是需要一定的乐理知识。</p>
+<p><strong>注2：</strong> 一般来说，方形波和锯齿波用于演奏高音和中音，三角波和正弦波用于演奏低音。</p>
+<p><strong>注3：</strong> 可以在维基百科找到音高和频率的对照表——</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E9%9F%B3%E9%AB%98#.E9.9F.B3.E9.AB.98.E9.A0.BB.E7.8E.87.E8.A1.A8" target="_blank" rel="noopener">维基百科：音高频率表</a></li>
+</ul>
+<hr>
+<h2 id="完结了。"><a href="#完结了。" class="headerlink" title="完结了。"></a>完结了。</h2><p>这个小教程就先写到这里为止了，然而 Web Audio API 的内容并不止于此。</p>
+<p>还有一些更加高级的 API，我觉得咱们平民大众应该这辈子都用不着的了。那些这里没有提及的 API 估计是用来把 Adobe Audition 移植成网页版的吧。</p>
+<p>（注：Adobe Audition 一个著名的音频处理软件，很强大的。）</p>
+<h2 id="本节的内容都用不着？"><a href="#本节的内容都用不着？" class="headerlink" title="本节的内容都用不着？"></a>本节的内容都用不着？</h2><p>那么可以考虑使用我已经封装好的 Javascript 库 —— <strong>Benz Audio Engine</strong>。</p>
+<p>项目 Github：<a href="https://github.com/BenzLeung/benz-audio-engine" target="_blank" rel="noopener">https://github.com/BenzLeung/benz-audio-engine</a></p>
+<p>这个库仅仅用到了本节所提到的第一个 API —— DynamicsCompressor，以及 SourceNode 和 GainNode（可能后续会考虑加入 Panner）。简单、干净，没有多余的功能。</p>
+<p>好了，如果写得不好，欢迎提建议。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://upload.jianshu.io/users/qrcodes/5831473/qrcode_for_gh_c16fba82ac82_430.jpg" alt="Benz Leung wechat" style="width: 200px; max-width: 100%;"/>
+    <div>同步更新的微信公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web-Audio-API/" rel="tag"># Web Audio API</a>
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+            <a href="/tags/Web-Audio-API-小教程/" rel="tag"># Web Audio API 小教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/Web-Audio-API-Guide-4/" rel="next" title="Web Audio API 小教程(4): 一些声音常识">
+                <i class="fa fa-chevron-left"></i> Web Audio API 小教程(4): 一些声音常识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/27/8-bit-Noise-Generator/" rel="prev" title="8位风格噪波生成器">
+                8位风格噪波生成器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4"
+                alt="Benz Leung" />
+            
+              <p class="site-author-name" itemprop="name">Benz Leung</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DynamicsCompressor-动态混音"><span class="nav-number">1.</span> <span class="nav-text">DynamicsCompressor - 动态混音</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Panner-3D立体环绕音效"><span class="nav-number">2.</span> <span class="nav-text">Panner - 3D立体环绕音效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BiquadFilter-滤波器、均衡器"><span class="nav-number">3.</span> <span class="nav-text">BiquadFilter - 滤波器、均衡器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analyser-频谱分析器（频谱图、时域图）"><span class="nav-number">4.</span> <span class="nav-text">Analyser - 频谱分析器（频谱图、时域图）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolver-卷积运算处理（环境混响音效）"><span class="nav-number">5.</span> <span class="nav-text">Convolver - 卷积运算处理（环境混响音效）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Oscillator-振荡器（声波生成器）"><span class="nav-number">6.</span> <span class="nav-text">Oscillator - 振荡器（声波生成器）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完结了。"><span class="nav-number"></span> <span class="nav-text">完结了。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本节的内容都用不着？"><span class="nav-number"></span> <span class="nav-text">本节的内容都用不着？</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Benz Leung</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'BenzLeung',
+            repo: 'benzleung-blog-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6d1d923393f62d3413da000ba8a2381dddca33c3',
+            
+                client_id: '57af0f5af37fe8a7e93a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

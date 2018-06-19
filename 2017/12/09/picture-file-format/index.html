@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近准备给团队传授图片格式的知识，于是开了谷歌，欲找些 PPT 素材，却发现似乎没有人好好写过与图片相关的知识，要么只是照搬一些百科的内容，要么写得太多 CRC、Gamma 之类的专(zhuang)业(B)术语，要么花了大量篇幅介绍它们的全称和历史（知道了全称和历史也不能把图片用得更好啊）。于是我果断自己写一篇。 其实，对于 JPG、GIF、PNG 这3种格式的选择，其套路非常简单粗暴——">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JPG？GIF？PNG？前端如何选择图片格式？">
+<meta property="og:url" content="https://benzleung.github.io/2017/12/09/picture-file-format/index.html">
+<meta property="og:site_name" content="Benz Leung">
+<meta property="og:description" content="最近准备给团队传授图片格式的知识，于是开了谷歌，欲找些 PPT 素材，却发现似乎没有人好好写过与图片相关的知识，要么只是照搬一些百科的内容，要么写得太多 CRC、Gamma 之类的专(zhuang)业(B)术语，要么花了大量篇幅介绍它们的全称和历史（知道了全称和历史也不能把图片用得更好啊）。于是我果断自己写一篇。 其实，对于 JPG、GIF、PNG 这3种格式的选择，其套路非常简单粗暴——">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-8898ffb67b096b56.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-8a7f306a26c6b2c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-bcd6e71539ddf9b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-88e4c5f821dc5423.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-564a50b933dfc886.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-b710d4f85b7ae9fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-5aefe235b7053e7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-3031e966db4e6b7d.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-5e196fd853f0dd7e.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-cee8afd7d6a43074.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-daf953e4b9c9a495.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-20c915d9fc52822b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-c953c48bc3efdfa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-12afedd2d0007d7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-8c5942014ae3b386.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-45104468a89d2e11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-fcd80820dcae027e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-ad35dceeae6f47c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-1aaac65c618ad352.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5831473-adbca7ed912e7618.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-06-19T08:40:04.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JPG？GIF？PNG？前端如何选择图片格式？">
+<meta name="twitter:description" content="最近准备给团队传授图片格式的知识，于是开了谷歌，欲找些 PPT 素材，却发现似乎没有人好好写过与图片相关的知识，要么只是照搬一些百科的内容，要么写得太多 CRC、Gamma 之类的专(zhuang)业(B)术语，要么花了大量篇幅介绍它们的全称和历史（知道了全称和历史也不能把图片用得更好啊）。于是我果断自己写一篇。 其实，对于 JPG、GIF、PNG 这3种格式的选择，其套路非常简单粗暴——">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/5831473-8898ffb67b096b56.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+
+
+
+  <link rel="canonical" href="https://benzleung.github.io/2017/12/09/picture-file-format/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JPG？GIF？PNG？前端如何选择图片格式？ | Benz Leung</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?08e7568514d4ec603eb05778e56aef48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Benz Leung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/BenzLeung" class="github-corner" target="_blank" title="My GitHub" aria-label="My GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://benzleung.github.io/2017/12/09/picture-file-format/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Benz Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Benz Leung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JPG？GIF？PNG？前端如何选择图片格式？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-12-09 16:33:08" itemprop="dateCreated datePublished" datetime="2017-12-09T16:33:08+08:00">2017-12-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-06-19 16:40:04" itemprop="dateModified" datetime="2018-06-19T16:40:04+08:00">2018-06-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/09/picture-file-format/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2017/12/09/picture-file-format/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近准备给团队传授图片格式的知识，于是开了谷歌，欲找些 PPT 素材，却发现似乎没有人<strong>好好写过</strong>与图片相关的知识，要么只是照搬一些百科的内容，要么写得太多 CRC、Gamma 之类的<strong>专(zhuang)业(B)术语</strong>，要么花了大量篇幅介绍它们的全称和历史（知道了全称和历史也不能把图片用得更好啊）。于是我果断自己写一篇。</p>
+<p>其实，对于 JPG、GIF、PNG 这3种格式的选择，其套路非常简单粗暴——</p>
+<a id="more"></a>
+<blockquote>
+<p>照片用 <strong>JPG</strong>。</p>
+<p>动画用 <strong>GIF</strong>。</p>
+<p>Logo、Icon 等小图用 <strong>PNG-8</strong>。</p>
+<p>非特殊情况，尽量不要用 PNG-24 和 PNG-32。</p>
+</blockquote>
+<p>而 <strong>WebP</strong> 这种谷歌发明的新格式，虽然比上述任何一种格式都要好，但是截至现在（2017年10月），它的浏览器兼容性还不行，所以暂时还不能用（或者用两套图片，不过我嫌麻烦）。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-8898ffb67b096b56.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WebP 格式的兼容性（截图自 caniuse 网站）"></p>
+<p>另外，最近还流行矢量图片 SVG 和 Icon Font，本文暂时不介绍这俩，以后有机会我再写。</p>
+<p>好了，懒人看到这就可以关掉本文章了<em>（或者直接拉到最后，打赏点赞加评论）</em>。</p>
+<hr>
+<p>下面介绍一些比较原理性的知识（但也不是很原理，反正像 CRC 呀 Gamma 呀之类的词我是不会用的）。</p>
+<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li>从早期的 BMP 格式讲起</li>
+<li>颜色表简介和作用</li>
+<li>PNG 的颜色表和特性</li>
+<li>GIF 的特性</li>
+<li>JPG 的特性</li>
+<li>JPG 的“连续”格式</li>
+<li>JPG、GIF、PNG 功能对比</li>
+<li>所以如何选择格式（结论上文已经给出，下文详解原因）</li>
+<li>Photoshop 保存图片的正确姿势</li>
+<li>tinypng.com - 让文件再小一点</li>
+<li>附加内容1：元数据</li>
+<li>附加内容2：色彩空间</li>
+</ul>
+<p>基本上，我可以自信地说——关于前端攻城狮和设计狮如何使用 JPG、GIF、PNG，<strong>看本文就够了</strong>。</p>
+<h2 id="从早期的-BMP-格式讲起"><a href="#从早期的-BMP-格式讲起" class="headerlink" title="从早期的 BMP 格式讲起"></a>从早期的 BMP 格式讲起</h2><p>BMP 格式图片，取自英文单词 <strong>B</strong>it<strong>m</strong>a<strong>p</strong>，Windows 中文版译作<strong>“位图”</strong>（不知道微软什么人的烂翻译），是早期 Windows 系统（XP以及更早期）所用的图片格式。</p>
+<p>BMP 的文件结构很简单，没有压缩，一个一个像素地记录起来。</p>
+<h2 id="BMP-的分类"><a href="#BMP-的分类" class="headerlink" title="BMP 的分类"></a>BMP 的分类</h2><p>Windows 自带的经典应用《画图》支持以下4种 BMP 格式：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-8a7f306a26c6b2c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="《画图》所支持的4种 BMP 格式"></p>
+<ul>
+<li>单色位图（1位）——1字节记录8个像素，图片一般只有黑和白。</li>
+<li>16色位图（4位）——1字节记录2个像素，图片有16种颜色。</li>
+<li>256色位图（8位）——1字节记录1个像素，256种颜色。</li>
+<li>24位位图——3个字节记录1个像素，红、绿、蓝三原色各占一个字节，总共大约1670万色，即<strong>真彩色</strong>。</li>
+</ul>
+<blockquote>
+<p>给小白补一波计算机基础知识：计算机数据是用二进制数字来存储的，1个字节就是一个8位的二进制数字，1024字节就是1KB，1024KB就是1MB，1024MB就是1GB。</p>
+<p>4位二进制数字，换成十进制可表示从0到15，共16个数，所以16色位图每个像素占用4位，即半个字节。</p>
+<p>8位二进制数字，换成十进制就是从0到255，所以256色位图每个像素占一个字节。</p>
+</blockquote>
+<p>那么问题来了……</p>
+<h2 id="16色、256色位图都有哪些颜色？"><a href="#16色、256色位图都有哪些颜色？" class="headerlink" title="16色、256色位图都有哪些颜色？"></a>16色、256色位图都有哪些颜色？</h2><p>16色、256色图片文件除了存储每个像素之外，还会存储一份<strong>颜色表</strong>（<strong>Palette</strong>，亦译作调色板、色盘），从真彩色的1670万种色彩里任意挑选16、256种颜色，构成一个索引。颜色表大概长这个样子：</p>
+<blockquote>
+<p>0号色：#000000</p>
+<p>1号色：#3385FF</p>
+<p>。。。</p>
+<p>255号色：#FAFEF2</p>
+</blockquote>
+<p>在 Photoshop 里打开一张256色图片，然后点击菜单 <strong>图像 → 模式 → 颜色表</strong>，可以看到当前图片的颜色表：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-bcd6e71539ddf9b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Photoshop 里查看颜色表"></p>
+<h2 id="游戏机的颜色表"><a href="#游戏机的颜色表" class="headerlink" title="游戏机的颜色表"></a>游戏机的颜色表</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-88e4c5f821dc5423.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="游戏机的颜色表"></p>
+<p>把颜色表用得最666的要数80年代的FC游戏机了。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-564a50b933dfc886.gif?imageMogr2/auto-orient/strip" alt="《超级马里奥》使用颜色表实现金币闪亮效果"></p>
+<p>是不是瞬间明白了颜色表是什么鬼？</p>
+<h2 id="颜色表的作用"><a href="#颜色表的作用" class="headerlink" title="颜色表的作用"></a>颜色表的作用</h2><p>对于 BMP 图片来说，若图片尺寸相等，16 色 BMP 的文件大小当然比 256 色 BMP 要少一半，因为可以用更少的字节数（位数）来存储一个像素。</p>
+<p>而 GIF 和 PNG 图片更高端，除了支持16色、256色的颜色表之外，还可以支持256色以内的任意颜色数。例如222色、111色、6色7色8色……它们都能支持。</p>
+<p>所以……</p>
+<p><strong>颜色数越少，文件体积越小。</strong></p>
+<p><strong>颜色数越少，文件体积越小。</strong></p>
+<p><strong>颜色数越少，文件体积越小。</strong></p>
+<h2 id="带颜色表的-PNG-和不带颜色表的-PNG"><a href="#带颜色表的-PNG-和不带颜色表的-PNG" class="headerlink" title="带颜色表的 PNG 和不带颜色表的 PNG"></a>带颜色表的 PNG 和不带颜色表的 PNG</h2><p>PNG可以大致分为3种：<strong>PNG-8</strong>、<strong>PNG-24</strong>、<strong>PNG-32</strong>。</p>
+<p>其中后面那个数字8、24、32代表位数，就像上述的BMP分4位（16色）、8位（256色）、24位（真彩色）一样。</p>
+<p>PNG 除了24位外还能有32位，除了红、绿、蓝三原色之外，还有个透明通道，从0-255表示从透明到半透明到不透明。</p>
+<p>PNG-8 带颜色表，而且不像 BMP 只有固定的16色、256色，PNG-8 的颜色数可以从2种到256种之间任意种，像123种、10种颜色之类的颜色数，PNG-8 都是支持的。而且通过强大的压缩算法，PNG-8 可以真正做到颜色数越少，文件体积越小。</p>
+<h2 id="带颜色表的-GIF"><a href="#带颜色表的-GIF" class="headerlink" title="带颜色表的 GIF"></a>带颜色表的 GIF</h2><p>GIF 图片是带颜色表的，它最多支持256色，也支持256以内任意数量的颜色表，但是<strong>不支持真彩色</strong>。</p>
+<p>GIF 的特性是<strong>帧动画</strong>。</p>
+<h2 id="不带颜色表的-JPG"><a href="#不带颜色表的-JPG" class="headerlink" title="不带颜色表的 JPG"></a>不带颜色表的 JPG</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-b710d4f85b7ae9fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="截图来源于PS CC2017：文件 → 导出 → 存储为 Web 所用格式（旧版）"></p>
+<p>JPG 不支持颜色表，也不支持透明，只有真彩色。</p>
+<p>JPG 的特性是<strong>有损压缩</strong>。对于网络传输来说，有损压缩是个优点。它可以削减一些肉眼难以察觉的细节，让图片体积大大减小。有损压缩特别适用于相机拍摄的照片。</p>
+<h2 id="“连续”格式的-JPG"><a href="#“连续”格式的-JPG" class="headerlink" title="“连续”格式的 JPG"></a>“连续”格式的 JPG</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-5aefe235b7053e7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="截图来源于PS CC2017：文件 → 存储为... → “JPG”格式 → 保存"></p>
+<p>常用 Photoshop 的童鞋可能已经发现，另存为JPG的选项对话框（如上图）中，有个“连续”选项。这是什么意思呢？</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-3031e966db4e6b7d.gif?imageMogr2/auto-orient/strip" alt="“基线”格式的JPG加载过程：从上往下"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-5e196fd853f0dd7e.gif?imageMogr2/auto-orient/strip" alt="“连续”格式的JPG加载过程：从模糊到清晰"></p>
+<p>“基线”和“连续”格式的JPG，主要是在网速比较慢的时候，图片加载方式不同。如上面两个动图所演示。</p>
+<h2 id="JPG、GIF、PNG-功能对比"><a href="#JPG、GIF、PNG-功能对比" class="headerlink" title="JPG、GIF、PNG 功能对比"></a>JPG、GIF、PNG 功能对比</h2><table>
+<thead>
+<tr>
+<th style="text-align:right"></th>
+<th style="text-align:center">JPG</th>
+<th style="text-align:center">GIF</th>
+<th style="text-align:center">PNG-8</th>
+<th style="text-align:center">PNG-24</th>
+<th style="text-align:center">PNG-32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">颜色表支持</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">真彩色支持</td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center">◉</td>
+</tr>
+<tr>
+<td style="text-align:right">有损压缩</td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">帧动画</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">透明像素支持</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+</tr>
+<tr>
+<td style="text-align:right">半透明度支持</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">◉</td>
+</tr>
+</tbody>
+</table>
+<p>JPG的主要特性是<strong>有损压缩</strong>。</p>
+<p>GIF的主要特性是<strong>帧动画</strong>。</p>
+<p>PNG的主要特性是<strong>半透明</strong>。</p>
+<p>（注意GIF不支持半透明，只能完全透明或者不透明。）</p>
+<h2 id="如何选择格式？"><a href="#如何选择格式？" class="headerlink" title="如何选择格式？"></a>如何选择格式？</h2><blockquote>
+<p>照片用 <strong>JPG</strong>。</p>
+<p>动画用 <strong>GIF</strong>。</p>
+<p>Logo、Icon 等小图用 <strong>PNG-8</strong>。</p>
+<p>非特殊情况，尽量不要用 PNG-24 和 PNG-32。</p>
+</blockquote>
+<p>这是本文开头的直接总结。</p>
+<p>下面讲原因。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-cee8afd7d6a43074.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="同一张图，PNG-8 的体积小于 GIF"></p>
+<p>首先，Logo、图标等小图片，整张图片一般不多于256色，因此当然选择带颜色表的图片格式。而事实证明，对于同一张图，PNG-8 的体积是小于GIF的。因此，<strong>若不是动画，小图片请用 PNG-8</strong>。</p>
+<p>然后，照片、横幅等大图，就像在线听歌一样。如果在线听无损音乐，那得很大的带宽才行。我们在线试听歌曲，目的就是听听这首歌，不会非常注重音质（而且我的木耳是听不出MP3和无损的区别的）。同样道理，放在网页中的大图，用户肯定不会太看重画质，能看清楚内容就行。因此，<strong>照片大图用有损压缩的JPG</strong>。</p>
+<p>根据经验，<strong>JPG的画质一般选择 60% - 70%</strong>。当然如果你要求较高，可以在PS里一边看预览一边慢慢调整直到自己满意。</p>
+<h2 id="Photoshop-保存图片的正确姿势"><a href="#Photoshop-保存图片的正确姿势" class="headerlink" title="Photoshop 保存图片的正确姿势"></a>Photoshop 保存图片的正确姿势</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-daf953e4b9c9a495.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="① 文件 → 导出 → 导出为..."></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-20c915d9fc52822b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="②选格式 ③元数据“无” ④不嵌入颜色配置"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-c953c48bc3efdfa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="PNG：勾选“较小文件（8位）”即可保存为 PNG-8"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-12afedd2d0007d7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GIF 无特殊选项"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-8c5942014ae3b386.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="JPG：若你不想慢慢调整，品质直接选择60%"></p>
+<ol>
+<li>文件 → 导出 → 导出为…</li>
+<li>选择格式<ul>
+<li>PNG：勾选<strong>“较小文件（8位）”</strong>即可保存为 PNG-8</li>
+<li>JPG：若你不想慢慢调整，品质直接粗暴地选择<strong>60%</strong>一般不会错</li>
+</ul>
+</li>
+<li>元数据选“无”</li>
+<li>勾选“转换为sRGB”，不要勾选“嵌入颜色配置”</li>
+</ol>
+<h2 id="tinypng-com-让文件再小一点"><a href="#tinypng-com-让文件再小一点" class="headerlink" title="tinypng.com - 让文件再小一点"></a>tinypng.com - 让文件再小一点</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-45104468a89d2e11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="tinypng.com - 一个帮助压缩图片的网站"></p>
+<p><a href="https://tinypng.com/" target="_blank" rel="noopener">tinypng.com</a> 是一个帮助进一步压缩PNG和JPG图片的网站，使用方法很简单，只要打开网站，然后把需要压缩的图片从桌面拖入这个网站中间的框里，然后坐等几秒钟，就可以下载被压缩的图片了。</p>
+<p>据网站的介绍，tinypng 可以有更好的压缩算法，而且通过智能地减少颜色数，达到有效的压缩。</p>
+<p>而喜欢命令行的程序猿，也可以试试 <a href="https://pmt.sourceforge.io/pngcrush/" target="_blank" rel="noopener">pngcrush</a> 工具。</p>
+<p>另外，腾讯ISUX团队也出品了一个类似 tinypng 的在线图片压缩工具，称为<strong><a href="http://zhitu.isux.us/" target="_blank" rel="noopener">智图</a></strong>。它除了 PNG 和 JPG ，还支持 WebP。</p>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><ul>
+<li>16色（4位）、256色（8位）图片的颜色由<strong>颜色表</strong>决定。</li>
+<li><strong>减少颜色数</strong>有助于减少图片体积。</li>
+<li>照片用 <strong>JPG</strong>，动画用 <strong>GIF</strong>，图标用 <strong>PNG-8</strong>，尽量不用 PNG-24 和 PNG-32。</li>
+<li>PS保存图片的正确姿势：文件 → 导出 → 导出为…</li>
+<li>第三方工具：<a href="https://tinypng.com/" target="_blank" rel="noopener">tinypng.com</a>、<a href="https://pmt.sourceforge.io/pngcrush/" target="_blank" rel="noopener">pngcrush</a>、<a href="http://zhitu.isux.us/" target="_blank" rel="noopener">腾讯智图</a></li>
+</ul>
+<p>以上就是本文的全部核心内容，但是我还不打算在此结束本文。</p>
+<hr>
+<p>在上文“Photoshop 保存图片的正确姿势”中， “导出为”对话框内提及了两个姿势：<strong>元数据</strong>选“无”、<strong>色彩空间</strong>中勾选“转换为sRGB”，不要勾选“嵌入颜色配置”。那么，元数据和色彩空间到底是什么鬼？为什么要用上述姿势？下面给两篇附加内容，让本文真正地做到“看这篇就够了”（自信脸）。</p>
+<h2 id="附加内容1：元数据"><a href="#附加内容1：元数据" class="headerlink" title="附加内容1：元数据"></a>附加内容1：元数据</h2><p>元数据是什么鬼？</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-fcd80820dcae027e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Photoshop：文件 → 文件简介..."></p>
+<p>在 Photoshop 中打开一张照片，然后点击菜单 <strong>文件 → 文件简介…</strong> ，即可看到这张照片的元数据。</p>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%85%83%E6%95%B0%E6%8D%AE" target="_blank" rel="noopener">维基百科</a>对元数据的解释是<strong>描述数据的数据</strong>。所以图片的元数据就是描述图片的数据咯。</p>
+<p>带元数据的图片文件会额外地加个几KB，存储这张图片的<strong>作者、拍摄日期、标题、版权、相机</strong>等文本信息。它会占用一些空间（例如JPG的元数据最大占用64KB），但是网页里的图标或背景图的元数据是没有任何用处的（除非你要声明图片版权）。</p>
+<p>因此，元数据选择<strong>“无”</strong>，把鸡肋的元数据清除，可以减小图片体积。</p>
+<h2 id="附加内容2：色彩空间"><a href="#附加内容2：色彩空间" class="headerlink" title="附加内容2：色彩空间"></a>附加内容2：色彩空间</h2><p><img src="https://upload-images.jianshu.io/upload_images/5831473-ad35dceeae6f47c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="sRGB 色彩空间"></p>
+<p>注明一下版权：上图转自<a href="https://zh.wikipedia.org/wiki/SRGB%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4" target="_blank" rel="noopener">维基百科</a>。</p>
+<p>上图中，那大块彩色的像舌头的东东，表示人类眼睛所能看到的所有颜色。中间的三角形框框，表示一般显示器能显示出来的所有颜色，这个三角形框框内的颜色，就是 <strong>sRGB 标准</strong>。</p>
+<p>而世界上并不仅仅有 sRGB 标准，毕竟 sRGB 只框住了全世界颜色不到一半。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-1aaac65c618ad352.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="各种色彩标准"></p>
+<p>注明一下版权：上图也转自<a href="https://en.wikipedia.org/wiki/Color_space" target="_blank" rel="noopener">维基百科</a>。</p>
+<p>Photoshop 支持多种色彩空间，图片文件只要<strong>嵌入颜色配置文件</strong>，即可使用特定的色彩空间。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5831473-adbca7ed912e7618.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Photoshop 新建文档，可以选择多种色彩空间"></p>
+<p>如果色彩空间不对，会让图片的色调要么变得过于暗淡，要么变得过于鲜艳。例如，Adobe RGB 标准的 #00FF00 （纯绿色）会比 sRGB 标准的同种颜色（#00FF00）看起来要更鲜艳。</p>
+<p>Photoshop 导出图片时，<strong>色彩空间</strong>中勾选“转换为sRGB”，不要勾选“嵌入颜色配置”，就是为了解决图片色调不对的问题。</p>
+<p>因为多数用户的屏幕只能显示 sRGB 标准的色彩，所以如果原图用了更高级的色彩空间，转换成sRGB就不需要额外嵌入颜色配置。毕竟，颜色配置也是占空间的。而且有些浏览器还会直接无视颜色配置（不支持色彩空间），直接按sRGB显示。</p>
+<p>如果原图本来是 sRGB 的，那么勾选“转换为sRGB”将不会有任何作用。不过，若不知道原图的色彩空间，勾选它总是不会错的。</p>
+<p>值得一提的是，从 iPhone 7 开始，苹果系列手机的屏幕和相机支持称为 <strong><a href="https://en.wikipedia.org/wiki/DCI-P3" target="_blank" rel="noopener">DCI-P3</a></strong> 的色彩空间，提供了比一般屏幕和相机（也就是 sRGB）更多的色彩。因此，把 iPhone 7 以上机型拍摄的图片传入电脑看，其效果很可能大大不如手机屏幕上看。</p>
+<p>（完）</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://upload.jianshu.io/users/qrcodes/5831473/qrcode_for_gh_c16fba82ac82_430.jpg" alt="Benz Leung wechat" style="width: 200px; max-width: 100%;"/>
+    <div>同步更新的微信公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/08/Out-of-control-study-note-chapter-1/" rel="next" title="《失控》读书笔记——第一章 人造与天生">
+                <i class="fa fa-chevron-left"></i> 《失控》读书笔记——第一章 人造与天生
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/14/AMR-Recorder/" rel="prev" title="作品：AMR 录音机">
+                作品：AMR 录音机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/2764768?s=460&v=4"
+                alt="Benz Leung" />
+            
+              <p class="site-author-name" itemprop="name">Benz Leung</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从早期的-BMP-格式讲起"><span class="nav-number">2.</span> <span class="nav-text">从早期的 BMP 格式讲起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BMP-的分类"><span class="nav-number">3.</span> <span class="nav-text">BMP 的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16色、256色位图都有哪些颜色？"><span class="nav-number">4.</span> <span class="nav-text">16色、256色位图都有哪些颜色？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏机的颜色表"><span class="nav-number">5.</span> <span class="nav-text">游戏机的颜色表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色表的作用"><span class="nav-number">6.</span> <span class="nav-text">颜色表的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带颜色表的-PNG-和不带颜色表的-PNG"><span class="nav-number">7.</span> <span class="nav-text">带颜色表的 PNG 和不带颜色表的 PNG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带颜色表的-GIF"><span class="nav-number">8.</span> <span class="nav-text">带颜色表的 GIF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不带颜色表的-JPG"><span class="nav-number">9.</span> <span class="nav-text">不带颜色表的 JPG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“连续”格式的-JPG"><span class="nav-number">10.</span> <span class="nav-text">“连续”格式的 JPG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JPG、GIF、PNG-功能对比"><span class="nav-number">11.</span> <span class="nav-text">JPG、GIF、PNG 功能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择格式？"><span class="nav-number">12.</span> <span class="nav-text">如何选择格式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Photoshop-保存图片的正确姿势"><span class="nav-number">13.</span> <span class="nav-text">Photoshop 保存图片的正确姿势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tinypng-com-让文件再小一点"><span class="nav-number">14.</span> <span class="nav-text">tinypng.com - 让文件再小一点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结一下"><span class="nav-number">15.</span> <span class="nav-text">总结一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附加内容1：元数据"><span class="nav-number">16.</span> <span class="nav-text">附加内容1：元数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附加内容2：色彩空间"><span class="nav-number">17.</span> <span class="nav-text">附加内容2：色彩空间</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Benz Leung</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'BenzLeung',
+            repo: 'benzleung-blog-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6d1d923393f62d3413da000ba8a2381dddca33c3',
+            
+                client_id: '57af0f5af37fe8a7e93a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
